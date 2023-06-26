@@ -14,10 +14,15 @@ class GPE230_PHOENIXROSS_API AMazeCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AMazeCharacter();
+	UPROPERTY(EditAnywhere)
+		float maxHealth;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual void Die();
+	float _currentHealth;
 
 public:	
 	// Called every frame
@@ -31,6 +36,10 @@ private:
 		float moveSpeed;
 	UPROPERTY(EditAnywhere)
 		float rotationSpeed;
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* _deathAnim;
+	UPROPERTY(EditAnywhere)
+		bool _isDead = false;
 
 private:
 	void MoveFB(float value);
