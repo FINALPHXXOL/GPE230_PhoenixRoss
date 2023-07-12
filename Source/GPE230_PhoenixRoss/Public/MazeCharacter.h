@@ -4,6 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "Engine/SkeletalMesh.h"
+#include "Camera/CameraComponent.h"
+
+#include "NiagaraTypes.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+
 #include "MazeCharacter.generated.h"
 
 UCLASS()
@@ -16,33 +24,45 @@ public:
 	AMazeCharacter();
 	UPROPERTY(EditAnywhere)
 		float maxHealth;
+	UPROPERTY(EditAnywhere)
+		float _currentHealth;
+	UPROPERTY(EditAnywhere)
+		float defaultWalkSpeed;
+	UPROPERTY(EditAnywhere)
+		float moveSpeed;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void Die();
-	float _currentHealth;
+	
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual float Heal(float healthToAdd);
+	virtual void IncreaseMoveSpeedForTime(float addSpeed, float duration);
+	virtual void RevertMoveSpeed();
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private: 
-	UPROPERTY(EditAnywhere)
-		float moveSpeed;
+	
 	UPROPERTY(EditAnywhere)
 		float rotationSpeed;
 	UPROPERTY(EditAnywhere)
 		UAnimSequence* _deathAnim;
 	UPROPERTY(EditAnywhere)
 		bool _isDead = false;
+	UPROPERTY(EditAnywhere)
+		UNiagaraSystem* _stunSystem;
 
 private:
 	void MoveFB(float value);
 	void MoveLR(float value);
 	void Rotate(float value);
+	UFUNCTION(BlueprintCallable)
+	void ActivateStunParticleSystem();
 };

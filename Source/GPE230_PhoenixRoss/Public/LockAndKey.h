@@ -16,7 +16,7 @@ class GPE230_PHOENIXROSS_API ALockAndKey : public ATriggerBox
 	GENERATED_BODY()
 	
 public:
-	ALockAndKey();
+		ALockAndKey();
 
 	UFUNCTION()
 		void CheckActorType(class AActor* OverlappedActor, class AActor* OtherActor);
