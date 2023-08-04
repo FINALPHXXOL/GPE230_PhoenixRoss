@@ -12,6 +12,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 
+#include "Blueprint/UserWidget.h"
+
 #include "MazeCharacter.generated.h"
 
 UCLASS()
@@ -22,7 +24,7 @@ class GPE230_PHOENIXROSS_API AMazeCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AMazeCharacter();
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		float maxHealth;
 	UPROPERTY(EditAnywhere)
 		float _currentHealth;
@@ -30,11 +32,22 @@ public:
 		float defaultWalkSpeed;
 	UPROPERTY(EditAnywhere)
 		float moveSpeed;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> _gameOverScreenTemplate;
+	UUserWidget* _gameOverScreenInstance;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> _victoryScreenTemplate;
+	UUserWidget* _victoryScreenInstance;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void Die();
+	virtual void OpenGameOverScreen();
+	virtual void PauseGameplay(bool bIsPaused);
+	virtual void ShowMouseCursor();
+
+	APlayerController* _controller;
 	
 
 public:	
@@ -43,7 +56,11 @@ public:
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	virtual float Heal(float healthToAdd);
 	virtual void IncreaseMoveSpeedForTime(float addSpeed, float duration);
+	virtual void WaitBeforePause(float duration);
 	virtual void RevertMoveSpeed();
+	virtual void OpenVictoryScreen();
+	UFUNCTION(BlueprintCallable)
+		float GetCurrentHealth();
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -64,5 +81,5 @@ private:
 	void MoveLR(float value);
 	void Rotate(float value);
 	UFUNCTION(BlueprintCallable)
-	void ActivateStunParticleSystem();
+		void ActivateStunParticleSystem();
 };

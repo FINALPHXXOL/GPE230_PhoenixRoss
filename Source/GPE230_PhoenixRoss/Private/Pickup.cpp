@@ -3,6 +3,9 @@
 
 #include "Pickup.h"
 #include "MazeCharacter.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundWave.h"
 
 APickup::APickup()
 {
@@ -21,6 +24,7 @@ void APickup::CheckActorType(class AActor* OverlappedActor, class AActor* OtherA
 
 void APickup::Apply(AMazeCharacter* player)
 {
+	UGameplayStatics::PlaySound2D(player, _pickupSound);
 	DestroySelf();
 }
 

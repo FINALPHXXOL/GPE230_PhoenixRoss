@@ -25,7 +25,7 @@ void AMazeCharacter::IncreaseMoveSpeedForTime(float AddSpeed, float Duration)
 		CharacterMovementU->MaxWalkSpeed += AddSpeed;
 
 		// Set a timer to revert the maximum walk speed after the specified duration
-		GetWorldTimerManager().SetTimer(IncreaseSpeedTimerHandle, this, &AMazeCharacter::RevertMoveSpeed, Duration, false);
+		GetWorldTimerManager().SetTimer(IncreaseSpeedTimerHandle, this, &AMazeCharacter::, Duration, false);
 	}
 }
 
@@ -39,11 +39,27 @@ void AMazeCharacter::RevertMoveSpeed()
 	}
 }
 
+FTimerHandle AnimPlayOut;
+FTimerDelegate TimerDelegate;
+
+void AMazeCharacter::WaitBeforePause(float duration)
+{
+	TimerDelegate.BindUFunction(this, FName("PauseGameplay"), true);
+	GetWorldTimerManager().SetTimer(AnimPlayOut, TimerDelegate, duration, false);
+}
+
 // Called when the game starts or when spawned
 void AMazeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	_controller = Cast<APlayerController>(GetController());
+
 	_currentHealth = maxHealth;
+
+	_gameOverScreenInstance = CreateWidget(GetWorld(), _gameOverScreenTemplate);
+	_victoryScreenInstance = CreateWidget(GetWorld(), _victoryScreenTemplate);
+
 	UCharacterMovementComponent* CharacterMovementU = GetCharacterMovement();
 	if (CharacterMovementU)
 	{
@@ -99,8 +115,40 @@ void AMazeCharacter::Die()
 	rotationSpeed = 0;
 
 	GetMesh()->PlayAnimation(_deathAnim, false);
+	WaitBeforePause(_deathAnim->GetPlayLength());
 
 	//ToDo: Trigger game over state and prompt the player to restart the level.
+	OpenGameOverScreen();
+	
+}
+
+float AMazeCharacter::GetCurrentHealth()
+{
+	return _currentHealth;
+}
+
+
+void AMazeCharacter::OpenGameOverScreen()
+{
+	_gameOverScreenInstance->AddToViewport();
+	ShowMouseCursor();
+}
+
+void AMazeCharacter::OpenVictoryScreen()
+{
+	_victoryScreenInstance->AddToViewport();
+	PauseGameplay(true);
+	ShowMouseCursor();
+}
+
+void AMazeCharacter::PauseGameplay(bool bIsPaused)
+{
+	_controller->SetPause(bIsPaused);
+}
+
+void AMazeCharacter::ShowMouseCursor()
+{
+	_controller->bShowMouseCursor = true;
 }
 
 // Called every frame

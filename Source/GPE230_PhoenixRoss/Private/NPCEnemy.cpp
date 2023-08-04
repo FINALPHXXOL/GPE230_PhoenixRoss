@@ -5,6 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/DamageType.h"
+#include "Sound/SoundWave.h"
 
 // Sets default values
 ANPCEnemy::ANPCEnemy()
@@ -57,6 +58,7 @@ void ANPCEnemy::DetectHit()
 
 				// Apply damage to the hit actor
 				UGameplayStatics::ApplyDamage(HitResult.GetActor(), _HitDamage, GetController(), this, UDamageType::StaticClass());
+				UGameplayStatics::PlaySound2D(this, _punchSound);
 
 				canDamage = false;
 			}

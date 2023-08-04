@@ -2,6 +2,9 @@
 
 #include "LockAndKey.h"
 #include "MazeCharacter.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundWave.h"
 
 
 ALockAndKey::ALockAndKey()
@@ -19,6 +22,7 @@ void ALockAndKey::CheckActorType(class AActor* OverlappedActor, class AActor* Ot
 	//If the other actor is a maze character
 	if (OtherActor->IsA(AMazeCharacter::StaticClass()))
 	{
+		UGameplayStatics::PlaySound2D(OtherActor, _doorSound);
 		OpenTheDoor();
 	}
 }

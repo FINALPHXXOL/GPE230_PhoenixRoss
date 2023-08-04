@@ -18,6 +18,8 @@ public:
 		APickup();
 	UFUNCTION()
 		virtual void CheckActorType(class AActor* OverlappedActor, class AActor* OtherActor);
+	UPROPERTY(EditAnywhere)
+		USoundWave* _pickupSound;
 protected:
 	UFUNCTION()
 		virtual void Apply(AMazeCharacter* player);
