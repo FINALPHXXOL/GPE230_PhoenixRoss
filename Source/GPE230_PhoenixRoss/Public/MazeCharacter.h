@@ -57,6 +57,7 @@ public:
 	virtual float Heal(float healthToAdd);
 	virtual void IncreaseMoveSpeedForTime(float addSpeed, float duration);
 	virtual void WaitBeforePause(float duration);
+	virtual void ExecuteAfterTimer();
 	virtual void RevertMoveSpeed();
 	virtual void OpenVictoryScreen();
 	UFUNCTION(BlueprintCallable)

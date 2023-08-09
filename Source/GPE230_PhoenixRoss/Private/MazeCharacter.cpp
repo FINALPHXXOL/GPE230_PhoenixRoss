@@ -56,12 +56,18 @@ void AMazeCharacter::RevertMoveSpeed()
 }
 
 FTimerHandle AnimPlayOut;
-FTimerDelegate TimerDelegate;
+//FTimerDelegate TimerDelegate;
 
 void AMazeCharacter::WaitBeforePause(float duration)
 {
-	TimerDelegate.BindUFunction(this, FName("PauseGameplay"), true);
-	GetWorldTimerManager().SetTimer(AnimPlayOut, TimerDelegate, duration, false);
+	// Set the timer to call the custom function after the specified duration
+	GetWorldTimerManager().SetTimer(AnimPlayOut, this, &AMazeCharacter::ExecuteAfterTimer, duration, false);
+}
+
+void AMazeCharacter::ExecuteAfterTimer()
+{
+	// This function will be called after the timer expires
+	OpenGameOverScreen();
 }
 
 float AMazeCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -115,7 +121,7 @@ void AMazeCharacter::Die()
 	WaitBeforePause(_deathAnim->GetPlayLength());
 
 	//ToDo: Trigger game over state and prompt the player to restart the level.
-	OpenGameOverScreen();
+	
 	
 }
 
