@@ -3,3 +3,7 @@
 
 #include "MazeSaveGame.h"
 
+UMazeSaveGame::UMazeSaveGame()
+{
+
+}

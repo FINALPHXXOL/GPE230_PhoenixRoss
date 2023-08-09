@@ -15,6 +15,7 @@ class GPE230_PHOENIXROSS_API AVictoryTriggerVolume : public ATriggerBox
 	GENERATED_BODY()
 	
 public:
+	AVictoryTriggerVolume();
 	UFUNCTION()
 		void CheckActorType(class AActor* OverlappedActor, class AActor* OtherActor);
 

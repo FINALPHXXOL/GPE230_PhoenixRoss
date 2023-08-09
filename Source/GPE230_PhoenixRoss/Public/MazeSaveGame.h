@@ -15,9 +15,16 @@ class GPE230_PHOENIXROSS_API UMazeSaveGame : public USaveGame
 	GENERATED_BODY()
 	
 public:
-	int furthestCompletedLevel;
-	float masterVolumeSetting;
-	float musicVolumeSetting;
-	float sfxVolumeSetting;
+	UMazeSaveGame();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int furthestCompletedLevel;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float masterVolumeSetting;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float musicVolumeSetting;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float sfxVolumeSetting;
+
+protected:
 
 };

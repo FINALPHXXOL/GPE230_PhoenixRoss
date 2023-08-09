@@ -13,6 +13,22 @@ AMazeCharacter::AMazeCharacter()
 
 }
 
+// Called when the game starts or when spawned
+void AMazeCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	_controller = Cast<APlayerController>(GetController());
+
+	_currentHealth = maxHealth;
+
+	UCharacterMovementComponent* CharacterMovementU = GetCharacterMovement();
+	if (CharacterMovementU)
+	{
+		defaultWalkSpeed = CharacterMovementU->MaxWalkSpeed;
+	}
+}
+
 // Declare a timer handle for the duration of the increased move speed
 FTimerHandle IncreaseSpeedTimerHandle;
 
@@ -25,7 +41,7 @@ void AMazeCharacter::IncreaseMoveSpeedForTime(float AddSpeed, float Duration)
 		CharacterMovementU->MaxWalkSpeed += AddSpeed;
 
 		// Set a timer to revert the maximum walk speed after the specified duration
-		GetWorldTimerManager().SetTimer(IncreaseSpeedTimerHandle, this, &AMazeCharacter::, Duration, false);
+		GetWorldTimerManager().SetTimer(IncreaseSpeedTimerHandle, this, &AMazeCharacter::RevertMoveSpeed, Duration, false);
 	}
 }
 
@@ -46,25 +62,6 @@ void AMazeCharacter::WaitBeforePause(float duration)
 {
 	TimerDelegate.BindUFunction(this, FName("PauseGameplay"), true);
 	GetWorldTimerManager().SetTimer(AnimPlayOut, TimerDelegate, duration, false);
-}
-
-// Called when the game starts or when spawned
-void AMazeCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-	_controller = Cast<APlayerController>(GetController());
-
-	_currentHealth = maxHealth;
-
-	_gameOverScreenInstance = CreateWidget(GetWorld(), _gameOverScreenTemplate);
-	_victoryScreenInstance = CreateWidget(GetWorld(), _victoryScreenTemplate);
-
-	UCharacterMovementComponent* CharacterMovementU = GetCharacterMovement();
-	if (CharacterMovementU)
-	{
-		defaultWalkSpeed = CharacterMovementU->MaxWalkSpeed;
-	}
 }
 
 float AMazeCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -130,15 +127,49 @@ float AMazeCharacter::GetCurrentHealth()
 
 void AMazeCharacter::OpenGameOverScreen()
 {
-	_gameOverScreenInstance->AddToViewport();
+	PauseGameplay(true);
 	ShowMouseCursor();
+	if (_gameOverScreenTemplate)
+	{
+		_gameOverScreenInstance = CreateWidget(GetWorld(), _gameOverScreenTemplate);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Game Over screen template is null."));
+	}
+
+	if (_gameOverScreenInstance)
+	{
+		_gameOverScreenInstance->AddToViewport();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Game Over screen instance is null."));
+	}
+	
 }
 
 void AMazeCharacter::OpenVictoryScreen()
 {
-	_victoryScreenInstance->AddToViewport();
 	PauseGameplay(true);
 	ShowMouseCursor();
+	if (_victoryScreenTemplate)
+	{
+		_victoryScreenInstance = CreateWidget(GetWorld(), _victoryScreenTemplate);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Victory screen template is null."));
+	}
+
+	if (_victoryScreenInstance)
+	{
+		_victoryScreenInstance->AddToViewport();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Victory screen instance is null."));
+	}
 }
 
 void AMazeCharacter::PauseGameplay(bool bIsPaused)
