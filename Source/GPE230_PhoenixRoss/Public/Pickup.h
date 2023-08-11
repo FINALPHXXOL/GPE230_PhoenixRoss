@@ -20,6 +20,10 @@ public:
 		virtual void CheckActorType(class AActor* OverlappedActor, class AActor* OtherActor);
 	UPROPERTY(EditAnywhere)
 		USoundWave* _pickupSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float applyChance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float stunTime;
 protected:
 	UFUNCTION()
 		virtual void Apply(AMazeCharacter* player);

@@ -9,7 +9,7 @@
 #include "MazeGameMode.generated.h"
 
 /**
- * 
+ Maze Game Mode
  */
 UCLASS()
 class GPE230_PHOENIXROSS_API AMazeGameMode : public AGameModeBase

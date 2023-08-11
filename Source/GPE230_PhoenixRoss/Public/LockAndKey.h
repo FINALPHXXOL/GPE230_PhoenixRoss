@@ -7,7 +7,7 @@
 #include "LockAndKey.generated.h"
 
 /**
-*
+Lock and Key class
 */
 
 UCLASS()

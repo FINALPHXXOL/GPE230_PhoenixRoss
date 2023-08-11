@@ -7,7 +7,7 @@
 #include "VictoryTriggerVolume.generated.h"
 
 /**
- * 
+ Victory trigger volume class.
  */
 UCLASS()
 class GPE230_PHOENIXROSS_API AVictoryTriggerVolume : public ATriggerBox

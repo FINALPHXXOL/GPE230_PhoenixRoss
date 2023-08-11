@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "NPCEnemy.generated.h"
 
+// Class for enemy NPCs
 UCLASS()
 class GPE230_PHOENIXROSS_API ANPCEnemy : public ACharacter
 {
@@ -31,7 +32,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-		float _TraceRadius = 500.0f;
+		float _TraceRadius = 210.0f;
 	UPROPERTY(EditAnywhere)
 		FName _PunchingHandSocketName;
 	UPROPERTY(EditAnywhere)

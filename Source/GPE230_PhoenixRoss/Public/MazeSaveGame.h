@@ -6,8 +6,8 @@
 #include "GameFramework/SaveGame.h"
 #include "MazeSaveGame.generated.h"
 
-/**
- * 
+/*
+SaveGame Class
  */
 UCLASS()
 class GPE230_PHOENIXROSS_API UMazeSaveGame : public USaveGame
@@ -18,6 +18,8 @@ public:
 	UMazeSaveGame();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int furthestCompletedLevel;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int lastCompletedLevel;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float masterVolumeSetting;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

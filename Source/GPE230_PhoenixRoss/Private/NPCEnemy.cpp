@@ -2,6 +2,7 @@
 
 
 #include "NPCEnemy.h"
+#include "MazeCharacter.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/DamageType.h"
@@ -22,6 +23,7 @@ void ANPCEnemy::BeginPlay()
 	
 }
 
+// Detects hit
 void ANPCEnemy::DetectHit()
 {
 	bool canDamage = true;
@@ -52,21 +54,24 @@ void ANPCEnemy::DetectHit()
 		{
 			if (canDamage)
 			{
-				FString hitActorName = HitResult.GetActor()->GetName();
+				if (AMazeCharacter* HitMazeCharacter = Cast<AMazeCharacter>(HitResult.GetActor()))
+				{
+					FString hitActorName = HitResult.GetActor()->GetName();
 
-				UE_LOG(LogTemp, Log, TEXT("NPCEnemy actor \"%s\" hit other actor \"%s\", dealing %f damage."), *ownerName, *hitActorName, _HitDamage);
+					//UE_LOG(LogTemp, Log, TEXT("NPCEnemy actor \"%s\" hit other actor \"%s\", dealing %f damage."), *ownerName, *hitActorName, _HitDamage);
 
-				// Apply damage to the hit actor
-				UGameplayStatics::ApplyDamage(HitResult.GetActor(), _HitDamage, GetController(), this, UDamageType::StaticClass());
-				UGameplayStatics::PlaySound2D(this, _punchSound);
+					// Apply damage to the hit actor
+					UGameplayStatics::ApplyDamage(HitMazeCharacter, _HitDamage, GetController(), this, UDamageType::StaticClass());
+					UGameplayStatics::PlaySound2D(this, _punchSound);
 
-				canDamage = false;
+					canDamage = false;
+				}
 			}
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("NPCEnemy actor \"%s\" did not detect any valid hits on its last attack."), *ownerName);
+		//UE_LOG(LogTemp, Log, TEXT("NPCEnemy actor \"%s\" did not detect any valid hits on its last attack."), *ownerName);
 	}
 }
 

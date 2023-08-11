@@ -6,7 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundWave.h"
 
-
+// LockAndKey class
 ALockAndKey::ALockAndKey()
 {
 	OnActorBeginOverlap.AddDynamic(this, &ALockAndKey::CheckActorType);
@@ -27,6 +27,7 @@ void ALockAndKey::CheckActorType(class AActor* OverlappedActor, class AActor* Ot
 	}
 }
 
+// opens door function
 void ALockAndKey::OpenTheDoor()
 {
 	this->Destroy();

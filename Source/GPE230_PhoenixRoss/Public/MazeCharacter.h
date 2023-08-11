@@ -31,6 +31,8 @@ public:
 	UPROPERTY(EditAnywhere)
 		float defaultWalkSpeed;
 	UPROPERTY(EditAnywhere)
+		float defaultMoveSpeed;
+	UPROPERTY(EditAnywhere)
 		float moveSpeed;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> _gameOverScreenTemplate;
@@ -38,6 +40,8 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> _victoryScreenTemplate;
 	UUserWidget* _victoryScreenInstance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundWave* _stunSound;
 
 protected:
 	// Called when the game starts or when spawned
@@ -57,7 +61,10 @@ public:
 	virtual float Heal(float healthToAdd);
 	virtual void IncreaseMoveSpeedForTime(float addSpeed, float duration);
 	virtual void WaitBeforePause(float duration);
-	virtual void ExecuteAfterTimer();
+	virtual void ExecutePause();
+	virtual void ExecuteStun(float duration);
+	virtual void ExecuteUnstun();
+
 	virtual void RevertMoveSpeed();
 	virtual void OpenVictoryScreen();
 	UFUNCTION(BlueprintCallable)
@@ -67,11 +74,14 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private: 
-	
+	UPROPERTY(EditAnywhere)
+		float defaultRotationSpeed;
 	UPROPERTY(EditAnywhere)
 		float rotationSpeed;
 	UPROPERTY(EditAnywhere)
 		UAnimSequence* _deathAnim;
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* _stunAnim;
 	UPROPERTY(EditAnywhere)
 		bool _isDead = false;
 	UPROPERTY(EditAnywhere)

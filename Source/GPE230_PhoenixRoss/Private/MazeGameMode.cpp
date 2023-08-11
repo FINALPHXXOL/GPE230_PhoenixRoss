@@ -2,6 +2,7 @@
 
 #include "MazeGameMode.h"
 
+// Init game state
 void AMazeGameMode::InitGameState()
 {
 	Super::InitGameState();

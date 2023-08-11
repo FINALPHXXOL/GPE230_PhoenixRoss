@@ -6,11 +6,13 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
+// Victory Trigger Volume class
 AVictoryTriggerVolume::AVictoryTriggerVolume()
 {
 	OnActorBeginOverlap.AddDynamic(this, &AVictoryTriggerVolume::CheckActorType);
 }
 
+// Check Actor for overlap event
 void AVictoryTriggerVolume::CheckActorType(AActor* OverlappedActor, AActor* OtherActor)
 {
 	if (OtherActor->IsA(AMazeCharacter::StaticClass()))
@@ -25,6 +27,7 @@ void AVictoryTriggerVolume::CheckActorType(AActor* OverlappedActor, AActor* Othe
 	}
 }
 
+// opens Victory screen by calling to MazeCharacter
 void AVictoryTriggerVolume::OpenVictoryScreen(AMazeCharacter* player)
 {
 	player->OpenVictoryScreen();
